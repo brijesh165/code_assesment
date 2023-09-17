@@ -19,7 +19,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
       />
       <label
         htmlFor={id}
-        className="block text-sm font-normal text-fontPlaceholder leading-6"
+        className="block text-sm font-normal text-gray2 leading-6"
       >
         {label}
       </label>

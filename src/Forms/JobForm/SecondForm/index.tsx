@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import Input from "../../../Components/Input";
 import RadioButton from "../../../Components/RadioButton";
 import Button from "../../../Components/Button";
-import { JOB_TYPE } from "../../../Types/CreateJobTypes";
+import { JOB_TYPE } from "../../../Types/JobTypes";
 import { firstFormValidation } from "../formUtils";
 
 const SecondForm: React.FC<SecondFormProps> = ({
@@ -94,7 +94,7 @@ const SecondForm: React.FC<SecondFormProps> = ({
                 placeholder="ex. 100"
               />
               <div className="w-full flex flex-col gap-1">
-                <label className="block text-sm font-medium leading-5 text-fontDark">
+                <label className="block text-sm font-medium leading-5 text-dark">
                   Apply Type
                 </label>
                 <div className="flex items-center gap-4">
@@ -127,7 +127,6 @@ const SecondForm: React.FC<SecondFormProps> = ({
                 type="submit"
                 text={isEditForm ? "Update" : "Save"}
                 onClick={handleSubmit}
-                withLoader
               />
             </div>
           </Form>

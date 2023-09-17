@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { JOB_TYPE } from "../../Types/CreateJobTypes";
+import { JOB_TYPE } from "../../Types/JobTypes";
 
 export const INITIAL_VALUES: JOB_TYPE = {
   jobTitle: "",

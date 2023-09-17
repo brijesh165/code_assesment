@@ -1,30 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Components/Header";
 import Modal from "./Components/Modal";
-import CreateJob from "./Forms/CreateJobForm";
-import JobTile from "./Components/JobTile";
+import CreateJob from "./Forms/JobForm";
+import JobCard from "./Components/JobCard";
 import Spinner from "./Components/Spinner";
-import { deleteJobById, useAllJobs } from "./Apis/Jobs";
+import { axiosInstance } from "./Apis/Jobs";
+import { JOB_TYPE } from "./Types/JobTypes";
 
 const App = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [jobId, setJobId] = useState<string>();
+  const [jobs, setJobs] = useState<JOB_TYPE[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // API call
-  const { jobs, isLoading, mutate } = useAllJobs();
+  useEffect(() => {
+    getAllJobs();
+  }, []);
 
-  // Function called on click of onClose of Modal
-  const handleCloseModal = async () => {
-    setJobId(undefined);
-    setOpen(false);
-  };
-
-  // Function called when user clicks on delete button
-  const handleDelete = (id?: string) => {
-    if (!id) return;
-    deleteJobById(id)
-      .then(() => mutate())
-      .catch((e: any) => console.error("Error: ", e.message));
+  const getAllJobs = () => {
+    setLoading(true);
+    axiosInstance
+      .get("/jobs")
+      .then((res: any) => {
+        if (res.status === 200) {
+          setLoading(false);
+          setJobs(res.data);
+        }
+      })
+      .catch((e: any) => {
+        console.log("All Jobs Error: ", e.message);
+      });
   };
 
   // Function called when user clicks on edit button
@@ -34,25 +39,41 @@ const App = () => {
     setOpen(true);
   };
 
-  if (isLoading) return <Spinner />;
+  // Function called when user clicks on delete button
+  const handleDelete = (id?: string) => {
+    if (!id) return;
+    axiosInstance
+      .delete(`/jobs/${id}`)
+      .then(() => getAllJobs())
+      .catch((e: any) => console.error("Error: ", e.message));
+  };
+
+  // Function called on click of onClose of Modal
+  const handleCloseModal = async () => {
+    setJobId(undefined);
+    setOpen(false);
+    getAllJobs();
+  };
+
+  if (loading) return <Spinner />;
   return (
     <>
       <Header onClick={() => setOpen((prev) => !prev)} />
 
-      <div className="h-full p-6 bg-bgGrey">
+      <div className="h-full p-6 bg-background">
         {!!jobs?.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-[30px]">
             {jobs.map((job) => (
-              <JobTile
+              <JobCard
                 key={job.id}
                 job={job}
-                handleDelete={handleDelete.bind(this, job.id)}
                 handleEdit={handleEdit.bind(this, job.id)}
+                handleDelete={handleDelete.bind(this, job.id)}
               />
             ))}
           </div>
         ) : (
-          <div className="p-4 bg-cardColor rounded-md">
+          <div className="p-4 bg-white rounded-md">
             There are no Jobs at the moment, please check later!
           </div>
         )}

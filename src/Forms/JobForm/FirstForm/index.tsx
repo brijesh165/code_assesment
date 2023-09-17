@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import Input from "../../../Components/Input";
 import Button from "../../../Components/Button";
-import { JOB_TYPE } from "../../../Types/CreateJobTypes";
+import { JOB_TYPE } from "../../../Types/JobTypes";
 import { firstFormValidation } from "../formUtils";
 
 const FirstForm: React.FC<FirstFormProps> = ({ initialValues, submit }) => {
