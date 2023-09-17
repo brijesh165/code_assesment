@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  align-items: flex-start;
+  background-color: transparent;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  svg {
+    path {
+      transition: 250ms ease-in-out all;
+    }
+
+    &:hover {
+      path {
+        opacity: 0.5;
+      }
+    }
+  }
+}
